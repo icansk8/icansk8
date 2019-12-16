@@ -1,0 +1,56 @@
+<?php
+$conn = mysqli_connect("localhost","root","","nilai_nama_anda");
+
+    //Buat query untuk mengambil data jurusan
+    $query = "Yang Di Teori";
+    $hasil = mysqli_query($conn,$query);
+?>
+<form method="post">
+	<div class="row">
+		<div class="col-md-12 text-right">
+			<h4>Laporan Cetak TRANSKIP NILAI Mahasiswa</h4>
+		</div>
+		
+	</div>
+	<br/>
+
+	<table width="100%" class="table table-striped table-hover table-bordered" id="tabeldata">
+        <thead align="center">
+            <tr>
+                
+                <th>NIM</th>
+                <th>Nama Mahsiswa</th>
+                <th>Kelas</th>
+                <th>Jurusan</th>
+                <th>Proses</th>
+               
+            </tr>
+        </thead>
+
+        <tfoot>
+            <tr>                
+                <th>NIM</th>
+                <th>Nama Mahsiswa</th>
+                <th>Kelas</th>
+                <th>Jurusan</th>
+                <th>Proses</th>
+            </tr>
+        </tfoot>
+
+        <tbody>
+    <?php $i = 1;
+    while ($row = mysqli_fetch_assoc($hasil)) { ?>
+        <tr>
+                        <td><?php echo $row['nim_na'] ?></td>
+            <td><?php echo $row['nama_na'] ?></td>
+            <td><?php echo $row['kelas_na'] ?></td>
+            <td><?php echo $row['jurusan_na'] ?></td>
+                         <td style="vertical-align:middle;"><a href="print_na.php?nim_na=<?php echo $row['nim_na'] ?>" onclick="return confirm('Yakin ingin Mencetak KHS')" class="btn btn-info" target="_blank"><span class="glyphicon glyphicon-print" aria-hidden="true"></span>  CETAK </a></td>
+            
+        </tr>
+<?php
+}
+?>
+        </tbody>
+
+    </table>
