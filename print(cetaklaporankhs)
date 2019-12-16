@@ -1,0 +1,114 @@
+<?php 
+  	ini_set("display_errors", 0);
+    include "css/printer.css"; 
+  	$conn = mysqli_connect("localhost","root","","nilai_nama_anda");
+
+	 
+	$config = new Config();
+	$db = $config->getConnection();
+
+  $nim_na = isset($_GET['nim_na']) ? $_GET['nim_na'] : die('ERROR: missing nim_na.');
+
+  $query = "Query Yang Di Teori WHERE nim_na=$nim_na LIMIT 0,1";
+  $hasil = mysqli_query($conn,$query);
+
+  $query1 = "SELECT nilai_ziah.*, mahasiswa_na.nama_na, matakuliah_na.nmmk_na FROM nilai_na inner join mahasiswa_na ON nilai_na.nim_na = mahasiswa_na.nim_na inner join matakuliah_na ON nilai_na.kdmk_na = matakuliah_na.kdmk_na WHERE mahasiswa_na.nim_na= $nim_na ";
+  $hasil2 = mysqli_query($conn,$query1);
+  ?>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CETAK TRANSKIP NILAI</title>
+</head>
+<body onLoad="javascript:window.print()">
+
+<style type="text/css">
+.style4 {font-size: 12; }
+.style7 {	font-size: 12;
+	color: #265180;
+	font-family: Georgia, "Times New Roman", Times, serif;
+}
+</style>
+<table class="table table-bordered-none">
+  <tr>
+    <td rowspan="4" width="100"><img src="images/logo.png" height="80"></td>
+    <td><strong>SEKOLAH TINGGI ILMU KOMPUTER</strong></td>
+  </tr>
+   <tr>
+    <td><strong>STIKOM TUNAS BANGSA PEMATANGSIANTAR</strong></td>
+  </tr>
+  <tr>
+    <td>SK MENDIKNAS RI NO.166/D/0/2003 Tanggal 10 Oktober 2014</td>
+  </tr>
+  <tr>
+    <td>TERAKREDITASI BAN-PT NO.018/BAN-PT/Ak-VIII/Dpl-III/X/2016</td>
+  </tr>
+</table>
+<hr class="text-info">
+</br>
+
+<table class="table">
+   <?php $mhs = mysqli_fetch_assoc($hasil); ?>
+  <tr>
+  <td colspan="3" align="center"><strong>TRANSKIP NILAI</strong></td></tr>
+    
+    <tr>
+      <td><small>NIM</small></td>
+      <td><small>: <?php echo $row['nim_na'] ?></td></td> 
+      <td rowspan=5 valign=top align=right>
+        <img alt='galeri' src='images/image.jpg' height=110/></td>  
+    </tr>
+    <tr>
+      <td><small>Nama</td>
+      <td><small>: <?php echo $row['nama_na'] ?></td><td></td></td>
+    </tr>
+    <tr>
+      <td><small>Jurusan</td>
+      <td><small>: <?php echo $row['nmjurusan_na'] ?></td>
+    </tr>
+    <tr>
+      <td><small>Kelas</td>
+      <td><small>: <?php echo $row['nmkelas_na'] ?></td>
+    </tr>
+
+
+  </table>
+  <br><br>
+<table class="table table-bordered">
+      <thead align="center">
+            <tr>
+                <th>Nama Matakuliah</th>
+                <th>Tugas</th>
+                <th>Kuis</th>
+                <th>UTS</th>
+                <th>UAS</th>
+                <th>HADIR</th>
+                <th>ANGKA</th>
+                <th>HURUF</th>
+                <th>Keterangan</th>
+            </tr>
+        </thead>
+
+        <?php
+        while ($row1 = mysql_fetch_assoc($hasil2)){
+        ?>
+      <tbody>
+        <tr>
+             <td><?php echo $row1['nmmk_na'] ?></td>
+            <td><?php echo $row1['tugas_na'] ?></td>
+            <td><?php echo $row1['kuis_na'] ?></td>
+            <td><?php echo $row1['uts_na'] ?></td>
+            <td><?php echo $row1['uas_na'] ?></td>
+            <td><?php echo $row1['hadir_na'] ?></td>
+            <td><?php echo $row1['angka_na'] ?></td>
+            <td><?php echo $row1['huruf_na'] ?></td>
+            <td><?php echo $row1['ket_na'] ?></td>
+           
+        </tr>
+      <?php
+    }
+    ?>
+    </tbody>
+  </table>
+</body>
+</html>
